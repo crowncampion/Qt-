@@ -1,0 +1,45 @@
+# 构建目录
+build/
+build-*/
+cmake-build-*/
+out/
+install/
+
+# Qt Creator 生成的用户配置
+*.user
+*.user.*
+CMakeLists.txt.user*
+
+# 编译产物
+*.o
+*.obj
+*.exe
+*.dll
+*.a
+*.lib
+*.so
+*.dylib
+*.pdb
+*.ilk
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qm
+
+# 测试输出
+test-results.txt
+gui-smoke-results.txt
+
+# 编辑器与系统文件
+.vscode/
+.idea/
+.cache/
+compile_commands.json
+Thumbs.db
+desktop.ini
+*~
+*.swp
+
+# 本地配置：含数据库凭据，不入库。请复制 config.ini.example 为 config.ini 后填写。
+config.ini

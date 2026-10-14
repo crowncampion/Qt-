@@ -1,0 +1,208 @@
+/* ============================================================================
+   图书馆借阅管理系统 — 全局样式表
+   配色：深青主色 + 中性灰背景，保证长时间阅读不疲劳。
+   ========================================================================== */
+
+QWidget {
+    font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 13px;
+    color: #1f2933;
+}
+
+QMainWindow,
+QDialog {
+    background: #f4f6f8;
+}
+
+/* ---- 页头 ---------------------------------------------------------------- */
+
+QLabel#pageTitle {
+    font-size: 21px;
+    font-weight: 600;
+    color: #0f3d3e;
+}
+
+QLabel#pageSubtitle {
+    font-size: 12px;
+    color: #62727d;
+}
+
+QLabel#sectionTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f3d3e;
+}
+
+QLabel#hintLabel {
+    color: #62727d;
+}
+
+/* ---- 面板 ---------------------------------------------------------------- */
+
+QFrame#formFrame,
+QFrame#tableFrame,
+QFrame#toolbarFrame {
+    background: #ffffff;
+    border: 1px solid #dde3e8;
+    border-radius: 8px;
+}
+
+/* ---- 按钮 ---------------------------------------------------------------- */
+
+QPushButton {
+    min-height: 30px;
+    padding: 5px 16px;
+    border: 1px solid #c4ced6;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #1f2933;
+}
+
+QPushButton:hover {
+    background: #eef3f6;
+    border-color: #9fb1bd;
+}
+
+QPushButton:pressed {
+    background: #e2e9ee;
+}
+
+QPushButton:disabled {
+    background: #f2f4f6;
+    color: #a3aeb6;
+    border-color: #e0e5e9;
+}
+
+QPushButton[primary="true"] {
+    background: #12706b;
+    border-color: #0f5c58;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+QPushButton[primary="true"]:hover {
+    background: #16817b;
+}
+
+QPushButton[primary="true"]:pressed {
+    background: #0e5a56;
+}
+
+/* 主菜单入口按钮：白底 + 左侧主色标识条 */
+QPushButton[navButton="true"] {
+    min-height: 52px;
+    padding: 10px 20px;
+    text-align: left;
+    font-size: 14px;
+    background: #ffffff;
+    border: 1px solid #dde3e8;
+    border-left: 4px solid #12706b;
+    border-radius: 6px;
+}
+
+QPushButton[navButton="true"]:hover {
+    background: #f0f7f6;
+    border-left-color: #16817b;
+}
+
+/* ---- 输入控件 ------------------------------------------------------------ */
+
+QLineEdit,
+QSpinBox,
+QComboBox {
+    min-height: 28px;
+    padding: 2px 8px;
+    border: 1px solid #c4ced6;
+    border-radius: 6px;
+    background: #ffffff;
+    selection-background-color: #12706b;
+    selection-color: #ffffff;
+}
+
+QLineEdit:focus,
+QSpinBox:focus,
+QComboBox:focus {
+    border-color: #12706b;
+}
+
+QLineEdit[readOnly="true"] {
+    background: #f2f4f6;
+    color: #62727d;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 22px;
+}
+
+/* ---- 表格 ---------------------------------------------------------------- */
+
+QTableView {
+    background: #ffffff;
+    alternate-background-color: #f7f9fa;
+    border: 1px solid #dde3e8;
+    border-radius: 6px;
+    gridline-color: #eaeef1;
+    selection-background-color: #d7ebe9;
+    selection-color: #10302f;
+}
+
+QTableView::item {
+    padding: 6px 8px;
+}
+
+QHeaderView::section {
+    background: #eef3f6;
+    color: #35474f;
+    padding: 8px;
+    border: none;
+    border-right: 1px solid #dde3e8;
+    border-bottom: 1px solid #dde3e8;
+    font-weight: 600;
+}
+
+QTableCornerButton::section {
+    background: #eef3f6;
+    border: none;
+}
+
+/* ---- 标签页 -------------------------------------------------------------- */
+
+QTabWidget::pane {
+    border: 1px solid #dde3e8;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+QTabBar::tab {
+    padding: 8px 20px;
+    margin-right: 2px;
+    border: 1px solid #dde3e8;
+    border-bottom: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    background: #eef3f6;
+    color: #4a5b63;
+}
+
+QTabBar::tab:selected {
+    background: #ffffff;
+    color: #0f3d3e;
+    font-weight: 600;
+}
+
+QTabBar::tab:hover:!selected {
+    background: #e4ecef;
+}
+
+/* ---- 状态栏 -------------------------------------------------------------- */
+
+QStatusBar {
+    background: #eef3f6;
+    color: #4a5b63;
+    border-top: 1px solid #dde3e8;
+}
+
+QStatusBar::item {
+    border: none;
+}

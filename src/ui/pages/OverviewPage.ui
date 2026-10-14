@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OverviewPage</class>
+ <widget class="QWidget" name="OverviewPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>14</number>
+   </property>
+   <property name="leftMargin">
+    <number>24</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>24</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="headerLayout">
+     <property name="spacing">
+      <number>16</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="backButton">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>← 返回主菜单</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="titleLayout">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="titleLabel">
+         <property name="text">
+          <string>出借与归还总览</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="subtitleLabel">
+         <property name="text">
+          <string>查看全部借阅记录与归还流水</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="headerSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="refreshButton">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>刷新数据</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="summaryLabel">
+     <property name="text">
+      <string>正在统计…</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="loansTab">
+      <attribute name="title">
+       <string>借阅记录</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="loansTabLayout">
+       <property name="leftMargin">
+        <number>12</number>
+       </property>
+       <property name="topMargin">
+        <number>12</number>
+       </property>
+       <property name="rightMargin">
+        <number>12</number>
+       </property>
+       <property name="bottomMargin">
+        <number>12</number>
+       </property>
+       <item>
+        <widget class="QTableView" name="loansTableView">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="returnsTab">
+      <attribute name="title">
+       <string>归还记录</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="returnsTabLayout">
+       <property name="leftMargin">
+        <number>12</number>
+       </property>
+       <property name="topMargin">
+        <number>12</number>
+       </property>
+       <property name="rightMargin">
+        <number>12</number>
+       </property>
+       <property name="bottomMargin">
+        <number>12</number>
+       </property>
+       <item>
+        <widget class="QTableView" name="returnsTableView">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="tabHintLabel">
+     <property name="text">
+      <string>全部借阅记录，按借出时间倒序排列。</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

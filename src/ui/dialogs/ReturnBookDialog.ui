@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ReturnBookDialog</class>
+ <widget class="QDialog" name="ReturnBookDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>440</width>
+    <height>380</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>归还图书</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>12</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="hintLabel">
+     <property name="text">
+      <string>请确认以下借阅记录，并选择本次归还的数量。</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="summaryFrame">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="horizontalSpacing">
+       <number>12</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>8</number>
+      </property>
+      <property name="labelAlignment">
+       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="readerLabel">
+        <property name="text">
+         <string>借阅人：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="readerValue">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="bookNameLabel">
+        <property name="text">
+         <string>书名：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="bookNameValue">
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="isbnLabel">
+        <property name="text">
+         <string>ISBN：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="isbnValue">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="borrowTimeLabel">
+        <property name="text">
+         <string>借出时间：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="borrowTimeValue">
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="borrowedLabel">
+        <property name="text">
+         <string>借出数量：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="borrowedValue">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="returnedLabel">
+        <property name="text">
+         <string>已还数量：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLabel" name="returnedValue">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="outstandingLabel">
+        <property name="text">
+         <string>未还数量：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLabel" name="outstandingValue">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="inputLayout">
+     <property name="horizontalSpacing">
+      <number>12</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>8</number>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="returnTimeLabel">
+       <property name="text">
+        <string>归还时间：</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="returnTimeValue">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="countLabel">
+       <property name="text">
+        <string>归还数量：</string>
+       </property>
+       <property name="buddy">
+        <cstring>countSpinBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="countSpinBox">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
+       <property name="suffix">
+        <string> 本</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,57 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+Standard: c++17
+ColumnLimit: 110
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+AccessModifierOffset: -4
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: Never
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+BreakConstructorInitializers: BeforeComma
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+PointerAlignment: Right
+ReferenceAlignment: Right
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  # 本项目自己的头文件（src/ 为包含根）
+  - Regex: '^"(core|data|service|ui)/'
+    Priority: 1
+  # 同目录的头文件
+  - Regex: '^"'
+    Priority: 2
+  # Qt 头文件
+  - Regex: '^<Q[A-Z]'
+    Priority: 3
+  # 标准库
+  - Regex: '^<[a-z_]+>'
+    Priority: 4
+  # 其他
+  - Regex: '.*'
+    Priority: 5
+SpaceAfterCStyleCast: false
+SpaceBeforeParens: ControlStatements
+SpacesBeforeTrailingComments: 1
+FixNamespaceComments: true
+NamespaceIndentation: None
+AlignAfterOpenBracket: Align
+BinPackArguments: true
+BinPackParameters: true
