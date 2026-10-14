@@ -69,3 +69,20 @@ CREATE TABLE IF NOT EXISTS `return_records` (
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
+
+-- ---------------------------------------------------------------------------
+-- 表结构版本
+--
+-- 程序用它判断还需要应用哪些迁移（见 src/data/Database.cpp 的 kMigrations）。
+-- 下面的初始值必须等于 kMigrations 的条目数：用本脚本建出来的库已经有全部列，
+-- 不需要再跑任何迁移。新增迁移时请同时修改本文件。
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `schema_version` (
+    `version` INT NOT NULL COMMENT '已应用到的表结构版本'
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+INSERT INTO `schema_version` (`version`)
+SELECT 1
+WHERE NOT EXISTS (SELECT 1 FROM `schema_version`);

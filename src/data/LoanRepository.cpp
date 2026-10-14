@@ -65,6 +65,7 @@ Result<int> LoanRepository::insertLendRecord(const LendRecord &record)
         return Result<int>::failure(QStringLiteral("写入借阅记录失败：%1").arg(describe(query.lastError())));
     }
 
+    // 防御：同上，表上有 AUTO_INCREMENT 时成功插入必然得到 >= 1 的 id。
     const int newId = query.lastInsertId().toInt();
     if (newId <= 0) {
         return Result<int>::failure(QStringLiteral("写入借阅记录失败：未能获取记录编号"));
@@ -86,6 +87,7 @@ Result<int> LoanRepository::insertReturnRecord(const ReturnRecord &record)
         return Result<int>::failure(QStringLiteral("写入归还记录失败：%1").arg(describe(query.lastError())));
     }
 
+    // 防御：同 insertLendRecord，见该处说明。
     const int newId = query.lastInsertId().toInt();
     if (newId <= 0) {
         return Result<int>::failure(QStringLiteral("写入归还记录失败：未能获取记录编号"));

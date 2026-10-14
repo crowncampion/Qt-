@@ -13,7 +13,7 @@ namespace libms {
  *
  * 职责被限制为两件事：
  *  1. 按 DatabaseConfig 打开/关闭一条具名连接；
- *  2. 保证表结构满足程序预期（幂等升级）。
+ *  2. 保证表结构满足程序预期。
  *
  * 所有业务 SQL 都在各 Repository 中，本类不包含任何业务查询。
  */
@@ -32,7 +32,11 @@ public:
     /**
      * @brief 建立连接。
      *
-     * 连接成功后立即执行表结构升级；任一步失败都会返回可展示的错误信息。
+     * 调用前会先关闭已有连接，因此可安全重复调用：无论之前处于何种状态
+     * （从未连接、已连接、或上次失败后残留了连接名），调用后的状态只取决于本次尝试。
+     *
+     * 连接成功后立即执行表结构升级；任一步失败都会返回可展示的错误信息，
+     * 并让 isOpen() 返回 false（即使底层连接已经建立）。
      */
     VoidResult open(const DatabaseConfig &config = AppConfig::load());
 
@@ -51,14 +55,20 @@ public:
     const DatabaseConfig &config() const { return m_config; }
 
 private:
-    /// 幂等升级表结构：补齐缺失的表与列，并按借阅记录回填可借数量。
+    /**
+     * @brief 按版本号执行待应用的表结构迁移。
+     *
+     * schema_version 表记录当前已应用到哪个版本（没有这张表、或表为空都视为 0），
+     * 然后按顺序执行版本号更高的迁移。每个迁移自身必须可重复执行 ——
+     * 版本号只提供"跳过"的捷径，不代替迁移内部的幂等判断（例如列是否已存在）。
+     */
     VoidResult migrateSchema();
 
-    /// 检查某张表是否存在指定列。
-    bool columnExists(const QString &table, const QString &column) const;
+    /// 读取 schema_version；表不存在或为空都返回 0，表示尚未记录任何版本。
+    int readSchemaVersion();
 
-    /// 检查某张表是否存在。
-    bool tableExists(const QString &table) const;
+    /// 把已应用到的版本写入 schema_version。
+    VoidResult writeSchemaVersion(int version);
 
     bool m_open = false;
     DatabaseConfig m_config;

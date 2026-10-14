@@ -32,8 +32,7 @@ QString describe(const QSqlError &error)
 
 /// 从当前查询行构造 Book。
 ///
-/// 通过 QSqlRecord 按列名取值，而不是按数字下标：这样调整 SELECT 的列顺序
-/// 或插入新列都不会让字段错位（按下标取值时这类错误是静默的）。
+/// 通过 QSqlRecord 按列名取值，而不是按数字下标：这样调整 SELECT 的列顺序或插入新列都不会让字段错位。
 Book readBook(const QSqlQuery &query)
 {
     const QSqlRecord record = query.record();
@@ -72,11 +71,15 @@ Result<int> BookRepository::insert(const Book &book)
 
     if (!query.exec()) {
         if (query.lastError().nativeErrorCode().toInt() == kDuplicateEntryError) {
+            // 把 MySQL 的原始错误（Duplicate entry '...' for key 'uk_ISBN'）翻成用户能懂的中文。
             return Result<int>::failure(QStringLiteral("ISBN %1 已存在，请勿重复录入").arg(book.isbn));
         }
         return Result<int>::failure(QStringLiteral("新增图书失败：%1").arg(describe(query.lastError())));
     }
 
+    // 防御：正常情况不会走到这里。MySQL 自增 id 从 1 开始，只要表上有 AUTO_INCREMENT，
+    // 成功插入必然拿到 >= 1 的 id。此判断用于在表结构被改坏（例如去掉自增属性）时
+    // 给出明确提示，而不是把 id=0 当成功返回给上层。
     const int newId = query.lastInsertId().toInt();
     if (newId <= 0) {
         return Result<int>::failure(QStringLiteral("新增图书失败：未能获取新书编号"));

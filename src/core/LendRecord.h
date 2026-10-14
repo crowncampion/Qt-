@@ -20,8 +20,16 @@ struct LendRecord
     int returnedCount = 0;
 
     /// 尚未归还的数量。
+    ///
+    /// 正常情况下不会为负：数据库有 chk_lend_counts 约束
+    /// （returned_count BETWEEN 0 AND borrow_count），且归还前会校验数量。
     int outstandingCount() const { return borrowCount - returnedCount; }
 
+    /// 是否已全部归还。
+    ///
+    /// 防御：用 <= 0 而非 == 0。欠数变成负数说明历史数据异常（约束被绕过、
+    /// 手工改库、旧数据迁移），此时仍判定为「已还清」——否则这条记录会
+    /// 永远还不掉，而图书本身是完好的。异常由 LoanRepository 读取时记日志。
     bool isFullyReturned() const { return outstandingCount() <= 0; }
 
     bool isValid() const { return id > 0; }
