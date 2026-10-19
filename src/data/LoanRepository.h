@@ -46,10 +46,7 @@ public:
     QVector<ReturnRecord> findAllReturnRecords();
 
     /// 汇总某本书当前未归还的总数量（用于删除图书前的校验）。
-    int outstandingCountForIsbn(const QString &isbn) const;
-
-    /// 该书是否存在未归还记录。
-    bool hasOutstandingLoan(const QString &isbn) const;
+    Result<int> outstandingCount(const QString &isbn) const;
 
 private:
     Database &m_database;

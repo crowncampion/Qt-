@@ -40,11 +40,12 @@ QString describe(const QSqlError &error)
 /// book.available 的列名，供"列是否存在"检查与 ALTER 语句共用。
 const QString kAvailableColumn = QStringLiteral("available");
 
-/// 迁移 1：为重构前建立的数据库补上 book.available 列，并回填真实可借数量。
+/// 迁移 1：为 book 表补上 available 列，并算出它的初始值。
 ///
-/// 旧结构里没有记录可借数量的地方，只能从 lend_records 的借阅流水反推：
+/// 这一列的可借数量无法由 ALTER 自动得出，必须依据借阅流水计算：
 ///     available = total - SUM(未归还数量)
-/// 因此这一步无法由通用机制自动完成，必须手写。
+///
+/// 这类"新列的值依赖业务规则"的迁移无法由通用机制处理，只能在迁移里手写。
 VoidResult migrationAddAvailableColumn(QSqlDatabase &db)
 {
     QSqlQuery check(db);
@@ -58,8 +59,8 @@ VoidResult migrationAddAvailableColumn(QSqlDatabase &db)
         columnPresent = check.value(0).toInt() > 0;
     }
 
-    // 列已存在就直接返回：让这个迁移可以安全地重复执行。
-    // （版本号正常会拦住重复调用，这里是为手工重跑或 version 表被清掉的情况兜底。）
+    // 列已存在就直接返回，让这个迁移可以安全地重复执行。
+    // （版本号通常已拦住重复调用，此处为手工重跑或 version 表被清掉的情况兜底。）
     if (columnPresent) {
         return VoidResult::success();
     }
@@ -73,7 +74,7 @@ VoidResult migrationAddAvailableColumn(QSqlDatabase &db)
             QStringLiteral("升级表结构失败（book.available）：%1").arg(describe(alter.lastError())));
     }
 
-    // 回填：total 减去仍在借出的数量；GREATEST 兜底避免历史数据造成负数。
+    // 回填：total 减去仍在借出的数量；GREATEST 兜底避免数据异常造成负数。
     const QString backfill = QStringLiteral(
         "UPDATE book b SET b.available = GREATEST(b.total - COALESCE(("
         "  SELECT SUM(l.borrow_count - l.returned_count) FROM lend_records l"
@@ -88,16 +89,19 @@ VoidResult migrationAddAvailableColumn(QSqlDatabase &db)
     return VoidResult::success();
 }
 
+/// 一个迁移的执行函数：接收连接，返回成功或失败原因。
+using MigrationFn = VoidResult (*)(QSqlDatabase &);
+
 /// 迁移表：按 version 升序排列，version 必须从 1 开始且连续。
 struct SchemaMigration
 {
     int version;
     const char *description;
-    VoidResult (*apply)(QSqlDatabase &);
+    MigrationFn apply;
 };
 
 const SchemaMigration kMigrations[] = {
-    { 1, "新增 book.available 并回填可借数量", &migrationAddAvailableColumn },
+    { 1, "新增 book.available 并回填可借数量", migrationAddAvailableColumn },
 };
 
 /// 最新版本 = 迁移条数（version 从 1 开始连续编号，所以两者相等）。
@@ -273,7 +277,7 @@ VoidResult Database::migrateSchema()
                     .arg(applied.error()));
         }
 
-        // 每个迁移成功后就记一次版本，中途失败时下次只重跑未完成的部分。
+        // 每个迁移成功后立即记版本，中途失败时下次只补跑未完成的部分。
         const VoidResult recorded = writeSchemaVersion(migration.version);
         if (!recorded) {
             return recorded;

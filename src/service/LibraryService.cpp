@@ -56,8 +56,8 @@ bool LibraryService::isValidIsbn(const QString &isbn)
 
 bool LibraryService::isValidReaderId(const QString &readerId)
 {
-    // 汉字 + 英文字母，2~20 个字符；与原实现的校验规则一致。
-    static const QRegularExpression pattern(QStringLiteral("^[\\x{4e00}-\\x{9fa5}A-Za-z]{2,20}$"));
+    // 汉字 + 英文字母，2~20 个字符。
+    static const QRegularExpression pattern(QStringLiteral("^[\\x{4e00}-\\x{9fa5}A-Za-z]{1,20}$"));
     return pattern.match(readerId.trimmed()).hasMatch();
 }
 
@@ -181,10 +181,16 @@ VoidResult LibraryService::removeBook(int bookId)
     }
 
     // 有未归还记录时拒绝删除，避免借阅/归还记录失去对应的图书信息。
-    const int outstanding = m_loans.outstandingCountForIsbn(existing.value().isbn);
-    if (outstanding > 0) {
+    const Result<int> outstanding = m_loans.outstandingCount(existing.value().isbn);
+    if (!outstanding) {
+        return VoidResult::failure(outstanding.error());
+    }
+    if (outstanding.value() > 0) {
         return VoidResult::failure(
-            QStringLiteral("《%1》尚有 %2 本未归还，无法删除").arg(existing.value().name).arg(outstanding));
+            QStringLiteral("《%1》尚有 %2 本未归还，无法删除")
+                .arg(existing.value().name)
+                .arg(outstanding.value())
+            );
     }
 
     const VoidResult removed = m_books.remove(bookId);

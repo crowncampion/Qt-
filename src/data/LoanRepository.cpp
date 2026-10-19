@@ -174,23 +174,22 @@ QVector<ReturnRecord> LoanRepository::findAllReturnRecords()
     return records;
 }
 
-int LoanRepository::outstandingCountForIsbn(const QString &isbn) const
+Result<int> LoanRepository::outstandingCount(const QString &isbn) const
 {
     QSqlQuery query(m_database.handle());
     query.prepare(QStringLiteral("SELECT COALESCE(SUM(borrow_count - returned_count), 0) "
                                  "FROM lend_records WHERE isbn = :isbn AND borrow_count > returned_count"));
     query.bindValue(QStringLiteral(":isbn"), isbn);
 
-    if (!query.exec() || !query.next()) {
-        qWarning("统计未归还数量失败: %s", qPrintable(describe(query.lastError())));
-        return 0;
+    if (!query.exec()) {
+        return Result<int>::failure(
+            QStringLiteral("统计未归还数量失败：%1").arg(describe(query.lastError())));
     }
-    return query.value(0).toInt();
-}
-
-bool LoanRepository::hasOutstandingLoan(const QString &isbn) const
-{
-    return outstandingCountForIsbn(isbn) > 0;
+    if (!query.next()) {
+        // COALESCE 保证无匹配行时也返回一行 0，所以取不到行属于异常情况。
+        return Result<int>::failure(QStringLiteral("统计未归还数量失败：查询未返回结果"));
+    }
+    return Result<int>::success(query.value(0).toInt());
 }
 
 } // namespace libms
